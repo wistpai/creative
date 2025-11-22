@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>創作力六邊型 2.1 (Beta)</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #e67e22;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+        }
+        body {
+            font-family: "Microsoft JhengHei", sans-serif;
+            background-color: var(--bg-color);
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .container {
+            background: var(--card-bg);
+            width: 100%;
+            max-width: 1000px;
+            padding: 40px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border-radius: 15px;
+        }
+        h1 { text-align: center; color: var(--primary-color); margin-bottom: 5px; font-size: 2em; }
+        p.subtitle { text-align: center; color: #888; font-size: 0.9em; margin-bottom: 10px; letter-spacing: 1px; }
+        .quote-box {
+            text-align: center;
+            background: #fdfdfd;
+            border: 1px dashed #ccc;
+            padding: 10px 20px;
+            margin: 0 auto 30px auto;
+            border-radius: 50px;
+            font-size: 0.9em;
+            color: #555;
+            max-width: 80%;
+            line-height: 1.5;
+        }
+        
+        .name-section { text-align: center; margin-bottom: 35px; min-height: 60px; }
+        .name-wrapper {
+            display: inline-flex; align-items: center; background: #f1f4f6;
+            padding: 10px 20px; border-radius: 50px; border: 1px solid #ddd;
+        }
+        .name-wrapper label { font-weight: bold; color: var(--primary-color); margin-right: 10px; font-size: 1.1em; }
+        .name-wrapper input {
+            border: none; background: transparent; border-bottom: 2px solid #ccc;
+            font-size: 1.3em; width: 180px; text-align: center; color: var(--accent-color);
+            font-weight: bold; font-family: "Microsoft JhengHei", sans-serif; transition: border-color 0.3s;
+        }
+        .name-wrapper input:focus { outline: none; border-bottom-color: var(--accent-color); }
+
+        .layout { display: flex; flex-wrap: wrap; gap: 40px; margin-bottom: 40px; }
+        .controls { flex: 1; min-width: 300px; }
+        .visuals { flex: 1; min-width: 300px; display: flex; flex-direction: column; align-items: center; }
+
+        .input-group { margin-bottom: 15px; position: relative; }
+        .input-group label { display: block; font-weight: bold; margin-bottom: 5px; display: flex; justify-content: space-between; align-items: center; }
+        .input-group input[type=range] { width: 100%; cursor: pointer; accent-color: var(--primary-color); margin: 5px 0; }
+        .score-display { color: white; background: var(--accent-color); padding: 2px 8px; border-radius: 10px; font-size: 0.9em; }
+        .desc-box { background: #f4f6f7; border-left: 4px solid var(--primary-color); padding: 8px 12px; font-size: 0.85em; color: #555; border-radius: 0 4px 4px 0; min-height: 36px; display: flex; align-items: center; }
+
+        .results-card { background: #fff; border: 1px solid #eee; padding: 20px; border-radius: 10px; width: 100%; margin-top: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .stat-group { margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
+        .stat-group:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        
+        .stat-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+        .stat-label { font-weight: bold; color: var(--primary-color); font-size: 1.1em; }
+        .stat-desc-static { font-size: 0.8em; color: #777; margin-top: 4px; line-height: 1.4; max-width: 220px; }
+        
+        .stat-value-container { text-align: right; }
+        .stat-value { font-weight: bold; font-size: 1.6em; color: var(--accent-color); line-height: 1; }
+        .stat-rank { font-size: 1em; color: #2c3e50; font-weight: bold; display: block; margin-top: 5px; }
+
+        .diagnosis-box {
+            background: #f8f9fa;
+            border-radius: 6px;
+            padding: 10px 15px;
+            font-size: 0.85em;
+            color: #555;
+            line-height: 1.6;
+            border-left: 3px solid #bdc3c7;
+            margin-top: 10px;
+        }
+        .diagnosis-box strong { color: #2c3e50; }
+
+        .definitions-section { border-top: 2px dashed #eee; padding-top: 30px; margin-top: 20px; }
+        .section-title { text-align: center; font-weight: bold; color: var(--primary-color); margin-bottom: 20px; font-size: 1.2em; }
+        .def-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; }
+        .def-card { background: #fdfdfd; border: 1px solid #e0e0e0; border-radius: 8px; padding: 15px; font-size: 0.9em; line-height: 1.5; }
+        .def-title { color: var(--accent-color); font-weight: bold; margin-bottom: 5px; font-size: 1.1em; }
+
+        .btn { display: block; width: 100%; padding: 15px; background: var(--primary-color); color: white; border: none; border-radius: 8px; font-size: 1.1em; cursor: pointer; margin-top: 20px; transition: background 0.3s; font-weight: bold; }
+        .btn:hover { background: #34495e; }
+
+        #capture-area { padding: 30px; background: white; border-radius: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div id="capture-area">
+        <h1>創作力六邊型 2.1 (Beta)</h1>
+        <p class="subtitle">Designed by PaiPinChien</p>
+        <div class="quote-box">
+            「肚子裡有墨水，必須要倒得出來。」<br>
+            創作力是一種輸出的技術，將內在思考轉化為可見的形式。
+        </div>
+
+        <div class="name-section" id="name-section-container">
+            <div class="name-wrapper" id="original-name-wrapper">
+                <label for="username">創作者姓名：</label>
+                <input type="text" id="username" placeholder="請輸入姓名" maxlength="15">
+            </div>
+        </div>
+
+        <div class="layout">
+            <div class="controls">
+                <div style="margin-bottom: 15px; font-weight:bold; color:#555;">請滑動調整各項數值 (1-15)：</div>
+                <div id="inputs-container"></div>
+            </div>
+
+            <div class="visuals">
+                <div style="width: 100%; max-width: 350px;">
+                    <canvas id="radarChart"></canvas>
+                </div>
+
+                <div class="results-card">
+                    <div class="stat-group">
+                        <div class="stat-row">
+                            <div>
+                                <div class="stat-label">綜合指數 (廣度)</div>
+                                <div class="stat-desc-static">
+                                    代表創作版圖總面積。<br>
+                                    60分為具備基礎輸出技術的平均線。<br>
+                                    180分為具備跨域整合力的門檻。
+                                </div>
+                            </div>
+                            <div class="stat-value-container">
+                                <div class="stat-value" id="score-area">0</div>
+                                <div class="stat-rank" id="title-area">⚙️ 機械模式</div>
+                            </div>
+                        </div>
+                        <div class="diagnosis-box" id="desc-area">
+                            ...
+                        </div>
+                    </div>
+
+                    <div class="stat-group">
+                        <div class="stat-row">
+                            <div>
+                                <div class="stat-label">專業指數 (高度)</div>
+                                <div class="stat-desc-static">
+                                    代表特定專業領域的高度。<br>
+                                    7分代表能享受創作，並持續投入。<br>
+                                    12分為投入大量時間的專家門檻。
+                                </div>
+                            </div>
+                            <div class="stat-value-container">
+                                <div class="stat-value" id="score-depth">0</div>
+                                <div class="stat-rank" id="title-depth">🧸 尋找樂趣</div>
+                            </div>
+                        </div>
+                        <div class="diagnosis-box" id="desc-depth">
+                            ...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="definitions-section">
+            <div class="section-title">📊 六大創造力向度說明</div>
+            <div class="def-grid">
+                <div class="def-card"><div class="def-title">📝 文字 (Text)</div>符號與觀念的編碼能力。包含寫作、詩詞、劇本構思，將抽象思想轉化為精確的文字符號。</div>
+                <div class="def-card"><div class="def-title">🗣️ 口說 (Oral)</div>語言與聲音的表達能力。包含演說、朗誦、敘事，將文字符號轉化為具備感染力的聲音語言。</div>
+                <div class="def-card"><div class="def-title">🎵 音樂 (Music)</div>聽覺與律動的感知能力。包含旋律創作、節奏掌握、音感，捕捉時間流動中的聽覺美感。</div>
+                <div class="def-card"><div class="def-title">💃 舞動 (Dance)</div>身體與動態的表現能力。包含肢體協調、動作設計、戲劇身段，將內在情感轉化為身體的語言。</div>
+                <div class="def-card"><div class="def-title">🗿 形塑 (Form)</div>觸覺與空間的建構能力。包含雕塑、立體造型、手作工藝，處理三維空間中的物質與結構。</div>
+                <div class="def-card"><div class="def-title">🎨 繪圖 (Draw)</div>視覺與平面的再現能力。包含構圖、色彩、線條描繪，將三維世界的觀察轉化為二維平面的視覺符號。</div>
+            </div>
+        </div>
+        
+        <div style="margin-top: 20px; font-size: 0.8em; color: #bbb; text-align: center;">*本評量表僅供自我探索與教學輔助使用</div>
+    </div>
+
+    <button class="btn" onclick="downloadResult()">下載我的創作力分析圖</button>
+</div>
+
+<script>
+    const dimensions = [
+        { id: 'text', name: '文字', eng:'Text', val: 1 },
+        { id: 'oral', name: '口說', eng:'Oral', val: 1 },
+        { id: 'music', name: '音樂', eng:'Music', val: 1 },
+        { id: 'dance', name: '舞動', eng:'Dance', val: 1 },
+        { id: 'form', name: '形塑', eng:'Form', val: 1 },
+        { id: 'draw', name: '繪圖', eng:'Draw', val: 1 }
+    ];
+
+    const levels = [
+        "1. 從未思考要透過這個方法嘗試創作",
+        "2. 嘗試過創作但感受不到樂趣",
+        "3. 嘗試過創作，明白如果投入時間的話可以得到樂趣",
+        "4. 可以從創作中得到樂趣",
+        "5. 可以得到樂趣，並且願意累積作品",
+        "6. 無法掌握創作技術，但明白技術原理",
+        "7. 掌握初步的技術，在協助之下可以完成作品",
+        "8. 技術完整，能獨立完成作品",
+        "9. 技術熟練，但作品尚未能作為範例展示",
+        "10. 技術純熟，作品可作為範例",
+        "11. 技術內化，創作時能直覺運用，意到筆隨",
+        "12. 技巧成熟且具備獨特個人辨識度，形成穩定風格",
+        "13. 有穩定的創作產出，且作品獲得普遍讚賞",
+        "14. 有穩定的創作產出，且作品能在同質性作品中脫穎而出",
+        "15. 有穩定的創作產出，且作品被視為同世代最高水準"
+    ];
+
+    const container = document.getElementById('inputs-container');
+    dimensions.forEach((dim, index) => {
+        const div = document.createElement('div');
+        div.className = 'input-group';
+        div.innerHTML = `
+            <label>
+                <span>${dim.name} <small style="font-weight:normal; color:#888;">${dim.eng}</small></span>
+                <span class="score-display" id="val-${index}">1</span>
+            </label>
+            <input type="range" min="1" max="15" value="1" data-index="${index}" oninput="updateValue(this)">
+            <div class="desc-box" id="desc-${index}">${levels[0]}</div>
+        `;
+        container.appendChild(div);
+    });
+
+    const ctx = document.getElementById('radarChart').getContext('2d');
+    const chart = new Chart(ctx, {
+        type: 'radar',
+        data: {
+            labels: dimensions.map(d => d.name),
+            datasets: [{
+                label: '創作力分布',
+                data: dimensions.map(d => d.val),
+                backgroundColor: 'rgba(230, 126, 34, 0.2)',
+                borderColor: 'rgba(230, 126, 34, 1)',
+                pointBackgroundColor: 'rgba(44, 62, 80, 1)',
+                borderWidth: 2,
+                pointRadius: 3
+            }]
+        },
+        options: {
+            scales: {
+                r: {
+                    angleLines: { display: true },
+                    suggestedMin: 0,
+                    suggestedMax: 15,
+                    ticks: { stepSize: 5, display: false }
+                }
+            },
+            plugins: { legend: { display: false } }
+        }
+    });
+
+    function updateValue(input) {
+        const index = parseInt(input.getAttribute('data-index'));
+        const val = parseInt(input.value);
+        dimensions[index].val = val;
+        document.getElementById(`val-${index}`).innerText = val;
+        document.getElementById(`desc-${index}`).innerText = levels[val - 1];
+        chart.data.datasets[0].data = dimensions.map(d => d.val);
+        chart.update();
+        calculateIndices();
+    }
+
+    function calculateIndices() {
+        const vals = dimensions.map(d => d.val);
+        let area = 0;
+        const sin60 = Math.sin(60 * Math.PI / 180);
+        for (let i = 0; i < 6; i++) {
+            let a = vals[i];
+            let b = vals[(i + 1) % 6]; 
+            area += 0.5 * a * b * sin60;
+        }
+        const compositeIndex = parseFloat(area.toFixed(1));
+
+        let sortedVals = [...vals].sort((a, b) => b - a);
+        let max1 = sortedVals[0];
+        let max2 = sortedVals[1];
+        let baseAvg = (max1 + max2) / 2;
+        let isAdjacent = false;
+        for(let i=0; i<6; i++) {
+            let a = vals[i];
+            let b = vals[(i+1)%6];
+            if ( (a + b) === (max1 + max2) ) {
+                isAdjacent = true;
+                break;
+            }
+        }
+        let depthIndex = 0;
+        if (isAdjacent) {
+            depthIndex = baseAvg * (1 + compositeIndex / 1000);
+        } else {
+            depthIndex = baseAvg;
+        }
+        
+        document.getElementById('score-area').innerText = compositeIndex;
+        document.getElementById('score-depth').innerText = depthIndex.toFixed(1);
+
+        // --- 2.1 評級與診斷邏輯 (Updated) ---
+        
+        // 1. 綜合指數 (廣度)
+        let areaTitle = "";
+        let areaDesc = "";
+        if (compositeIndex <= 15) {
+            areaTitle = "⚙️ 機械模式";
+            areaDesc = "您可能過著按部就班，但稍微有點規律呆板的生活，就算你對於人生，對於世界有很多想法，但卻缺乏將其表現出來的動力。";
+        } else if (compositeIndex <= 60) {
+            areaTitle = "📻 單向接收";
+            areaDesc = "您可能很樂意接收各種他人的創作，但很少嘗試掌握技術去成為創作者。可能你能表達「很喜歡」，但身邊的人未必知道你為什麼喜歡。";
+        } else if (compositeIndex <= 180) {
+            areaTitle = "🎨 創造生活";
+            areaDesc = "這是最寬廣的區間。您可能是在多個領域都能找到樂趣的「生活家」，或是專精於單一技藝的「職人」。您已具備將想法倒出來的能力，差別在於專精到什麼程度，或多元到什麼地步。";
+        } else {
+            areaTitle = "🌐 跨域整合";
+            areaDesc = "您不僅技術純熟，且觸角寬廣，至少有兩個項目以上的專業是備受肯定的，因此具有強大的跨域整合能力，能夠在許多層面都發揮才華。";
+        }
+        document.getElementById('title-area').innerText = areaTitle;
+        document.getElementById('desc-area').innerText = areaDesc;
+        
+        const areaColor = compositeIndex > 180 ? "#e67e22" : (compositeIndex > 60 ? "#2c3e50" : "#bdc3c7");
+        document.getElementById('desc-area').style.borderLeftColor = areaColor;
+
+
+        // 2. 專業指數 (高度) - 原深度指數
+        let depthTitle = "";
+        let depthDesc = "";
+        if (depthIndex < 7) {
+            depthTitle = "🧸 尋找樂趣";
+            depthDesc = "有些時候你會懷疑，為什麼大家要這麼做，你還在尋找創作的樂趣。";
+        } else if (depthIndex < 12) {
+            depthTitle = "🛠️ 掌握技術";
+            depthDesc = "可能還稱不上特別投入，但你在某些部分是擁有創作能力的。";
+        } else if (depthIndex < 15) {
+            depthTitle = "💎 菁英達人";
+            depthDesc = "你是特定領域的專業創作者，完成的作品肯定都是平均以上的水準。";
+        } else {
+            depthTitle = "👑 大師";
+            depthDesc = "你不但是專家達人，而且在兩個以上的領域有極佳的表現，是兼具廣度與深度的大師。";
+        }
+        document.getElementById('title-depth').innerText = depthTitle;
+        document.getElementById('desc-depth').innerText = depthDesc;
+        
+        const depthColor = depthIndex >= 15 ? "#e67e22" : (depthIndex >= 12 ? "#2c3e50" : "#bdc3c7");
+        document.getElementById('desc-depth').style.borderLeftColor = depthColor;
+    }
+
+    function downloadResult() {
+        const element = document.getElementById('capture-area');
+        const input = document.getElementById('username');
+        const nameValue = input.value || '未命名';
+        const originalWrapper = document.getElementById('original-name-wrapper');
+        const nameSection = document.getElementById('name-section-container');
+
+        // Name Fix
+        const decoyDiv = document.createElement('div');
+        decoyDiv.style.background = "#f1f4f6";
+        decoyDiv.style.padding = "10px 20px";
+        decoyDiv.style.borderRadius = "50px";
+        decoyDiv.style.border = "1px solid #ddd";
+        decoyDiv.style.display = "inline-block";
+        decoyDiv.style.textAlign = "center";
+        
+        decoyDiv.innerHTML = `
+            <span style="font-weight: bold; color: #2c3e50; font-size: 1.1em; margin-right: 10px;">創作者姓名：</span>
+            <span style="font-size: 1.3em; color: #e67e22; font-weight: bold; font-family: 'Microsoft JhengHei', sans-serif; border-bottom: 2px solid #ccc; padding-bottom: 2px;">${nameValue}</span>
+        `;
+
+        originalWrapper.style.display = 'none';
+        nameSection.appendChild(decoyDiv);
+
+        // Slider Fix
+        const ranges = element.querySelectorAll('input[type="range"]');
+        const tempSliders = [];
+
+        ranges.forEach(range => {
+            const val = parseInt(range.value);
+            const max = parseInt(range.max);
+            const percent = (val - 1) / (max - 1) * 100;
+
+            const fakeSlider = document.createElement('div');
+            fakeSlider.style.height = "6px";
+            fakeSlider.style.background = "#ddd";
+            fakeSlider.style.margin = "10px 0";
+            fakeSlider.style.position = "relative";
+            fakeSlider.style.borderRadius = "3px";
+            fakeSlider.style.width = "100%";
+
+            const thumb = document.createElement('div');
+            thumb.style.position = "absolute";
+            thumb.style.left = `${percent}%`;
+            thumb.style.top = "50%";
+            thumb.style.transform = "translate(-50%, -50%)";
+            thumb.style.width = "16px";
+            thumb.style.height = "16px";
+            thumb.style.background = "#2c3e50";
+            thumb.style.borderRadius = "50%";
+            
+            fakeSlider.appendChild(thumb);
+
+            range.style.display = 'none';
+            range.parentNode.insertBefore(fakeSlider, range);
+            tempSliders.push({ real: range, fake: fakeSlider });
+        });
+
+        const originalBg = element.style.backgroundColor;
+        element.style.backgroundColor = "#ffffff";
+        
+        html2canvas(element, { scale: 2 }).then(canvas => {
+            const link = document.createElement('a');
+            link.download = `創作力分析2.1_${nameValue}.png`;
+            link.href = canvas.toDataURL();
+            link.click();
+            
+            element.style.backgroundColor = originalBg;
+            decoyDiv.remove();
+            originalWrapper.style.display = 'inline-flex';
+            tempSliders.forEach(item => {
+                item.fake.remove();
+                item.real.style.display = 'block';
+            });
+        });
+    }
+
+    calculateIndices();
+</script>
+
+</body>
+</html>
