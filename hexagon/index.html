@@ -101,25 +101,25 @@
         .btn { display: block; width: 100%; padding: 15px; background: var(--primary-color); color: white; border: none; border-radius: 8px; font-size: 1.1em; cursor: pointer; margin-top: 20px; transition: background 0.3s; font-weight: bold; }
         .btn:hover { background: #34495e; }
 
-.tool-entry-bar {
-    text-align: center;
-    margin: 10px 0 25px 0;
+.tool-entry-inline {
+    margin-top: 8px;
 }
 
-.tool-entry-link {
+.tool-entry-inline a {
     display: inline-block;
-    padding: 10px 18px;
+    padding: 4px 12px;
     border-radius: 999px;
     background: #f1f4f6;
     border: 1px solid #d7dde2;
     color: var(--primary-color);
     text-decoration: none;
+    font-size: 0.82em;
     font-weight: bold;
-    font-size: 0.95em;
+    line-height: 1.4;
     transition: all 0.25s ease;
 }
 
-.tool-entry-link:hover {
+.tool-entry-inline a:hover {
     background: var(--primary-color);
     color: #fff;
     border-color: var(--primary-color);
@@ -134,17 +134,13 @@
 <div class="container">
     <div id="capture-area">
         <h1>創作力六邊型</h1>
-        <p class="subtitle"> 2.1版 by PaiPinChien</p>
-               <div class="quote-box">
-            「肚子裡有墨水，必須要倒得出來。」<br>
-            創作力是一種輸出的技術，將內在思考轉化為可見的形式。
-        </div>
-
-        <div class="tool-entry-bar">
-<a class="tool-entry-link" href="https://wistpai.github.io/creative/" target="_blank" rel="noopener noreferrer">
-    返回創作工具簡易入口
-</a>
-        </div>
+<div class="quote-box">
+    「肚子裡有墨水，必須要倒得出來。」<br>
+    創作力是一種輸出的技術，將內在思考轉化為可見的形式。<br>
+    <div class="tool-entry-inline">
+        <a href="https://wistpai.github.io/creative/" target="_blank" rel="noopener noreferrer">更多創作工具</a>
+    </div>
+</div>
 
         <div class="name-section" id="name-section-container">
             <div class="name-wrapper" id="original-name-wrapper">
