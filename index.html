@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>創作工具簡易入口</title>
   <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
@@ -13,7 +17,7 @@
     }
 
     .container {
-      max-width: 960px;
+      max-width: 1180px;
       margin: 0 auto;
       padding: 56px 24px 72px;
     }
@@ -44,18 +48,85 @@
       color: #425466;
     }
 
-    .tool-grid {
+    .tool-sections {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 24px;
+      grid-template-columns: 1fr 2fr 1fr;
+      gap: 20px;
+      align-items: stretch;
+    }
+
+    .tool-section {
+      --accent: #2f6fed;
+      --accent-dark: #2458bc;
+      --tint: #eef5ff;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      padding: 18px;
+      border: 1px solid rgba(120, 140, 160, 0.14);
+      border-top: 5px solid var(--accent);
+      border-radius: 22px;
+      background: linear-gradient(145deg, var(--tint), #ffffff 74%);
+      box-shadow: 0 12px 34px rgba(31, 45, 61, 0.08);
+    }
+
+    .tool-section.poetry {
+      --accent: #7c3aed;
+      --accent-dark: #6326c5;
+      --tint: #f5f0ff;
+    }
+
+    .tool-section.story {
+      --accent: #2563eb;
+      --accent-dark: #1d4ed8;
+      --tint: #eef6ff;
+    }
+
+    .tool-section.measure {
+      --accent: #0f766e;
+      --accent-dark: #0b5f58;
+      --tint: #edfdf8;
+    }
+
+    .section-heading {
+      margin: 0 2px 16px;
+      min-height: 68px;
+    }
+
+    .section-heading .category-number {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--accent);
+      font-size: 0.76rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+    }
+
+    .section-heading h2 {
+      margin: 0;
+      color: #1f2d3d;
+      font-size: 1.12rem;
+      line-height: 1.45;
+    }
+
+    .section-cards {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      flex: 1;
+    }
+
+    .story .section-cards {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .tool-card {
-      background: #ffffff;
-      border-radius: 18px;
-      padding: 28px 24px;
-      box-shadow: 0 10px 30px rgba(31, 45, 61, 0.08);
-      border: 1px solid rgba(120, 140, 160, 0.12);
+      min-width: 0;
+      background: rgba(255, 255, 255, 0.94);
+      border-radius: 16px;
+      padding: 22px 20px;
+      box-shadow: 0 8px 24px rgba(31, 45, 61, 0.07);
+      border: 1px solid rgba(120, 140, 160, 0.13);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -63,8 +134,8 @@
     }
 
     .tool-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 14px 36px rgba(31, 45, 61, 0.12);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(31, 45, 61, 0.12);
     }
 
     .tool-card h2 {
@@ -85,17 +156,18 @@
       display: inline-block;
       text-decoration: none;
       text-align: center;
-      background: #2f6fed;
+      background: var(--accent);
       color: #ffffff;
       padding: 12px 18px;
       border-radius: 12px;
       font-weight: 700;
       letter-spacing: 0.03em;
-      transition: background 0.2s ease;
+      transition: background 0.2s ease, transform 0.2s ease;
     }
 
     .tool-card a:hover {
-      background: #2458bc;
+      background: var(--accent-dark);
+      transform: translateY(-1px);
     }
 
     .footer {
@@ -105,17 +177,53 @@
       color: #738496;
     }
 
+    @media (max-width: 1080px) {
+      .container {
+        max-width: 720px;
+      }
+
+      .tool-sections {
+        grid-template-columns: 1fr;
+      }
+
+      .section-heading {
+        min-height: 0;
+      }
+    }
+
     @media (max-width: 640px) {
       .container {
-        padding: 40px 18px 56px;
+        padding: 34px 14px 48px;
       }
 
       .hero h1 {
-        font-size: 2rem;
+        font-size: 1.85rem;
+      }
+
+      .hero {
+        margin-bottom: 30px;
+      }
+
+      .hero .desc {
+        font-size: 1rem;
+        line-height: 1.75;
+      }
+
+      .tool-section {
+        padding: 15px;
+        border-radius: 19px;
+      }
+
+      .story .section-cards {
+        grid-template-columns: 1fr;
       }
 
       .tool-card {
-        padding: 22px 20px;
+        padding: 20px 18px;
+      }
+
+      .tool-card a {
+        padding: 13px 16px;
       }
     }
   </style>
@@ -130,45 +238,69 @@
       </p>
     </header>
 
-    <main class="tool-grid">
-      <section class="tool-card">
-        <h2>故事大綱創作加速器</h2>
-        <p>
-          透過角色設定、素材擴充與故事架構設計，協助使用者逐步完成故事大綱。
-        </p>
-        <a href="https://script.google.com/macros/s/AKfycbzSERP6Fxqa55VB4fhtNnDWKAskdDct5i_-eORUsrpMs2JC5agEGxLHaFO4E77zgMHG/exec" target="_blank" rel="noopener noreferrer">
-          進入網站
-        </a>
+    <main class="tool-sections">
+      <section class="tool-section poetry">
+        <header class="section-heading">
+          <span class="category-number">01</span>
+          <h2>新詩寫作工具</h2>
+        </header>
+        <div class="section-cards">
+          <article class="tool-card">
+            <h2>曼陀羅小詩</h2>
+            <p>
+              透過集體詞庫抽取詞彙，依題目編號創作一行或兩行小詩，並欣賞經典詩作與同學作品。
+            </p>
+            <a href="https://script.google.com/macros/s/AKfycbyVFkFs9lpxMT9vX0r_VTx8429uCt-p5FcLVxoLx62sFPCNFK02IBBYdYhxIpF1Hx7vbw/exec" target="_blank" rel="noopener noreferrer">
+              進入網站
+            </a>
+          </article>
+        </div>
       </section>
 
-      <section class="tool-card">
-        <h2>集體創作故事元素組合器</h2>
-        <p>
-          集結多人提供的故事元素，快速組合角色、事件與情境，作為創作發想的起點。
-        </p>
-        <a href="https://script.google.com/macros/s/AKfycbyquW3ot6Nn8-VyLitAc5ota2p_36UW_rgEflYhPxTnAn3BEmiBT23Be-NvrEZERfDo/exec" target="_blank" rel="noopener noreferrer">
-          進入網站
-        </a>
+      <section class="tool-section story">
+        <header class="section-heading">
+          <span class="category-number">02</span>
+          <h2>故事寫作工具</h2>
+        </header>
+        <div class="section-cards">
+          <article class="tool-card">
+            <h2>故事大綱創作加速器</h2>
+            <p>
+              透過角色設定、素材擴充與故事架構設計，協助使用者逐步完成故事大綱。
+            </p>
+            <a href="https://script.google.com/macros/s/AKfycbzSERP6Fxqa55VB4fhtNnDWKAskdDct5i_-eORUsrpMs2JC5agEGxLHaFO4E77zgMHG/exec" target="_blank" rel="noopener noreferrer">
+              進入網站
+            </a>
+          </article>
+
+          <article class="tool-card">
+            <h2>集體創作故事元素組合器</h2>
+            <p>
+              集結多人提供的故事元素，快速組合角色、事件與情境，作為創作發想的起點。
+            </p>
+            <a href="https://script.google.com/macros/s/AKfycbyquW3ot6Nn8-VyLitAc5ota2p_36UW_rgEflYhPxTnAn3BEmiBT23Be-NvrEZERfDo/exec" target="_blank" rel="noopener noreferrer">
+              進入網站
+            </a>
+          </article>
+        </div>
       </section>
 
-      <section class="tool-card">
-        <h2>曼陀羅小詩</h2>
-        <p>
-          透過集體詞庫抽取詞彙，依題目編號創作一行或兩行小詩，並欣賞經典詩作與同學作品。
-        </p>
-        <a href="https://script.google.com/macros/s/AKfycbyVFkFs9lpxMT9vX0r_VTx8429uCt-p5FcLVxoLx62sFPCNFK02IBBYdYhxIpF1Hx7vbw/exec" target="_blank" rel="noopener noreferrer">
-          進入網站
-        </a>
-      </section>
-
-      <section class="tool-card">
-        <h2>創作力六邊型</h2>
-        <p>
-          以六個面向整理與觀察創作能力結構，作為課程討論與自我理解的輔助工具。
-        </p>
-       <a href="./hexagon/" target="_blank">
-          進入網站
-        </a>
+      <section class="tool-section measure">
+        <header class="section-heading">
+          <span class="category-number">03</span>
+          <h2>創作力自我測量</h2>
+        </header>
+        <div class="section-cards">
+          <article class="tool-card">
+            <h2>創作六邊型</h2>
+            <p>
+              以六個面向整理與觀察創作能力結構，作為課程討論與自我理解的輔助工具。
+            </p>
+            <a href="./hexagon/" target="_blank" rel="noopener noreferrer">
+              進入網站
+            </a>
+          </article>
+        </div>
       </section>
     </main>
 
