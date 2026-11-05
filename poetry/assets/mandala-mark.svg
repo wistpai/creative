@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none">
+  <title>曼陀羅花形標誌</title>
+  <path d="M64 85C66 101 76 109 87 115M74 102C86 91 101 93 109 98C98 111 86 113 74 102Z" stroke="#557957" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="#AEC89B"/>
+  <path d="M61 86C49 88 40 97 40 106C54 106 65 97 61 86Z" fill="#719A76"/>
+  <path d="M64 53C46 45 46 28 55 12C58 25 77 30 77 42C77 49 72 54 64 53Z" fill="#A99ACA"/>
+  <path d="M64 53C66 33 84 28 102 31C90 37 90 56 79 60C71 63 65 60 64 53Z" fill="#D8AED0"/>
+  <path d="M65 55C85 51 95 64 98 82C88 73 71 80 64 70C59 64 59 58 65 55Z" fill="#E4BC85"/>
+  <path d="M64 55C73 73 63 88 47 97C52 84 40 72 47 62C51 55 57 53 64 55Z" fill="#D2C29C"/>
+  <path d="M63 54C48 67 32 60 20 46C33 48 42 33 54 37C61 39 64 45 63 54Z" fill="#B2C7A1"/>
+  <path d="M55 12C59 43 70 45 64 55M102 31C77 41 72 51 64 55M98 82C79 62 74 66 64 55M47 97C58 72 54 66 64 55M20 46C42 48 51 58 64 55" stroke="#FAFAF5" stroke-width="2.5" stroke-linecap="round"/>
+  <circle cx="64" cy="55" r="7" fill="#9B8051"/><circle cx="64" cy="55" r="3" fill="#F9E4AE"/>
+</svg>

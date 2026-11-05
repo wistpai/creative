@@ -1,0 +1,63 @@
+{{HEAD}}
+<body>
+  <a class="skip" href="#main">跳至主要內容</a>
+  <header class="site-header wrap">
+    <a class="brand" href="./">{{MARK}}<span>為你寫一首詩</span></a>
+    <nav aria-label="頁面導覽"><a href="#about">關於計畫</a><a href="#rights">授權與隱私</a><a href="../">創作工具首頁</a></nav>
+  </header>
+  <main id="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="wrap hero-inner">
+        <div class="hero-copy">
+          <h1 id="hero-title">為你寫一首詩</h1>
+          <p class="tagline">留下一個詞、一句話，<br>我為你寫一首詩。</p>
+          <p class="hero-note">每份投稿都會被收藏，但不保證一定成為詩作。<br>你可以匿名，留下一點想說的；也可以先讀幾首詩。</p>
+          <div class="actions">{{SUBMIT}}{{IG}}</div>
+          <p class="small">詞彙、短句，或一小段故事與記憶。</p>
+        </div>
+        <img class="hero-art" src="./assets/mandala-watercolor.webp" width="1536" height="1024" alt="" aria-hidden="true" fetchpriority="high" decoding="async">
+      </div>
+    </section>
+    <section id="about" class="section about-section" aria-labelledby="about-title">
+      <div class="wrap">
+        <div class="intro-grid">
+          <div><p class="section-label">關於這個計畫</p><h2 id="about-title">從你留下的，<br>開始一首詩。</h2></div>
+          <div class="intro-copy">
+            <p>「為你寫一首詩」是一個由你提供少量的詞語、短句，由我來發想並完成一首詩的互動頁面。你不必先完成任何內容，也不必留下真實姓名。</p>
+            <p>詩一定是由我完成，不會是AI完成。創作以新詩為主，也有可能是古典詩。發表的配圖則來自AI協作。每份投稿不保證被採用，也不保證創作或發表時間。</p>
+            <p class="signature">作者：{{DISPLAY_NAME}}</p>
+            <p class="authorship-note">由作者獨立創作，不將靈感提供者列為共同作者。</p>
+          </div>
+        </div>
+        <ol class="process" aria-label="參與流程">
+          <li><span class="step-num">01</span><div class="step-copy"><h3>留下一點靈感</h3><p>幾個詞、一句短語，或一小段你願意提供的故事。暱稱與電子郵件都可不填。</p></div></li>
+          <li><span class="step-num">02</span><div class="step-copy"><h3>讓靈感成為詩</h3><p>若被採用，我會獨立完成創作；有留有效信箱並同意通知者，可收到完成詩作的消息。</p></div></li>
+          <li><span class="step-num">03</span><div class="step-copy"><h3>創作公開發布</h3><p>詩作配上AI協作製作的圖片，公開發表於instagram平台，並根據你的同意註記為誰而作。</p><a class="text-link" data-ig href="{{IG_URL}}" target="_blank" rel="noopener noreferrer">已發表詩作<span aria-hidden="true">↗</span></a></div></li>
+        </ol>
+      </div>
+    </section>
+    <section id="rights" class="section rights-section" aria-labelledby="rights-title">
+      <div class="wrap">
+        <div class="legal-layout">
+          <div>
+            <p class="section-label">文字的權利，清楚說明</p><h2 id="rights-title">授權與隱私</h2>
+            <p class="legal-intro">原創詩作的分享授權，與讀者投稿的創作利用授權，是兩件分別約定的事。</p>
+            <p class="small">投稿頁只保留摘要與同意勾選；完整內容在這裡閱讀。這個入口頁不收集投稿，投稿由獨立表單處理。</p>
+            <p class="legal-version">目前版本：{{TERMS_VERSION}}<br><a href="{{TERMS_LINK}}">開啟完整條款與版本存檔 ↗</a></p>
+          </div>
+          <div class="legal-list">{{DETAILS}}</div>
+        </div>
+        <div id="contact" class="contact">
+          <div><h2>與作者聯絡</h2><p>{{DISPLAY_NAME}}<br><a href="mailto:{{CONTACT_EMAIL}}">{{CONTACT_EMAIL}}</a></p></div>
+          <p>如需詢問投稿、授權，或提出資料查詢、更正、刪除及撤回通知同意，請透過信箱聯絡。為保護投稿者，處理前會先確認本人身分。</p>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer wrap">
+    <p>© 2026 {{DISPLAY_NAME}}｜原創詩作文字適用創用 CC（創用授權）。</p>
+    <p><a href="{{OFFICIAL_CC}}" target="_blank" rel="noopener noreferrer">姓名標示・非商業性・禁止改作 4.0</a>　<a href="../">創作工具首頁</a></p>
+  </footer>
+  <script src="./config.js"></script><script src="./app.js"></script>
+</body>
+</html>
