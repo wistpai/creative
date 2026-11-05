@@ -50,9 +50,9 @@
 
     .tool-sections {
       display: grid;
-      grid-template-columns: 1fr 2fr 1fr;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 20px;
-      align-items: stretch;
+      align-items: start;
     }
 
     .tool-section {
@@ -90,7 +90,7 @@
 
     .section-heading {
       margin: 0 2px 16px;
-      min-height: 68px;
+      min-height: 0;
     }
 
     .section-heading .category-number {
@@ -124,7 +124,7 @@
       min-width: 0;
       background: rgba(255, 255, 255, 0.94);
       border-radius: 16px;
-      padding: 22px 20px;
+      padding: 20px 18px;
       box-shadow: 0 8px 24px rgba(31, 45, 61, 0.07);
       border: 1px solid rgba(120, 140, 160, 0.13);
       display: flex;
@@ -146,7 +146,7 @@
     }
 
     .tool-card p {
-      margin: 0 0 24px;
+      margin: 0 0 18px;
       line-height: 1.8;
       color: #5b6b7a;
       flex-grow: 1;
@@ -192,6 +192,8 @@
     }
 
     @media (max-width: 640px) {
+      .tool-sections { grid-template-columns: 1fr; }
+      .tool-section { width: 100%; max-width: 420px; margin-inline: auto; }
       .container {
         padding: 34px 14px 48px;
       }
@@ -232,7 +234,7 @@
   <div class="container">
     <header class="hero">
       <h1>創作工具簡易入口</h1>
-      <p class="author">by Pai Pin Chien</p>
+      <p class="author">白品鍵（Wist）</p>
       <p class="desc">
         以下為白品鍵老師為文學創作相關課程所開發的創作工具，請點選下方按鈕前往。               
       </p>
